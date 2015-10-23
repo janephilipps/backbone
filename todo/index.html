@@ -9,7 +9,15 @@
   <!-- ========= -->
   <!-- Your HTML -->
   <!-- ========= -->
-  <div id="container">Loading...</div>
+  <section id="todoapp">
+    <header id="header">
+      <h1>Todos</h1>
+      <input id="new-todo" placeholder="What needs to be done?">
+    </header>
+    <section id="main">
+      <ul id="todo-list"></ul>
+    </section>
+  </section>
 
   <!-- ========= -->
   <!-- Libraries -->
@@ -23,24 +31,22 @@
   <!-- Javascript code -->
   <!-- =============== -->
   <script type="text/javascript">
-    var AppView = Backbone.View.extend({
-      // el - stands for element. Every view has a element associate in with HTML
-      //      content will be rendered.
-      el: '#container',
-      // It's the first function called when this view it's instantiated.
-      template: _.template("<h3>Hello <%= who %></h3>"),
-      initialize: function(){
-        this.render();
-      },
-      // $el - it's a cached jQuery object (el), in which you can use jQuery functions
-      //       to push content. Like the Hello World in this case.
-      render: function(){
-        this.$el.html(this.template({who: 'world!'}));
+    var app = {}; // create namespace for our app
+
+    app.Todo = Backbone.Model.extend({
+      defaults: {
+        title: '',
+        completed:false
       }
     });
 
-    var appView = new AppView();
+    app.TodoList = Backbone.Collection.extend({
+      model: app.Todo,
+      localStorage: new Store("backbone-todo")
+    });
 
+    // instance of the Collection
+    app.todoList = new app.TodoList();
   </script>
   
 </body>
